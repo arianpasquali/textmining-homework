@@ -52,13 +52,13 @@ Text sumarization with world clouds
 
 Wordclouds are good to summarize documents. It is great to visually highlight the most representative words for each cluster. 
 This script in R perform clustering and as output plots wordclouds for each cluster.
-As mentioned above, the algorithm tells that it may be a good idea to consider only 2 groups. To present more latent results I will consider here 2 clusters instead of 3. 
 
 An example of use with `20newsgroup_small` dataset::
 
-	R -f build_worldclouds.r ../../data/20newsgroup_small/ FALSE 2 30 80
+	R -f build_worldclouds.r ../../data/20newsgroup_small/ FALSE 3 30 100
 
-Here the plotted for each of the two clusters.
+Here the plotted for each of the three clusters.
 
 .. image:: _plots/20newsgroup_small/1_20newsgroup_small.png
 .. image:: _plots/20newsgroup_small/2_20newsgroup_small.png
+.. image:: _plots/20newsgroup_small/3_20newsgroup_small.png

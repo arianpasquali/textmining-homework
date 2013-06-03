@@ -16,8 +16,6 @@ if(is.na(max_clusters)){
   max_clusters = 6;
 }
 
-
-
 if(is.na(dataset_dir)){
   stop("Please, inform directory with the dataset. \n Usage find_k_clusters.r [path] [use_idf] [max k clusters]")
 }
@@ -37,12 +35,13 @@ load_categories <- function(path=".", pattern=NULL, all.dirs=FALSE,
 }
 
 clean_corpus<- function(corpus){
-  corpus <- tm_map(corpus, function(x) str_replace_all(x, "[[:punct:]]", " "))
+  corpus <- tm_map(corpus, stripWhitespace)
   corpus <- tm_map(corpus, tolower)
   corpus <- tm_map(corpus, removeWords, stopwords("english"))
-  corpus <- tm_map(corpus,removePunctuation)
-  corpus <- tm_map(corpus, stripWhitespace)
+  corpus <- tm_map(corpus, removePunctuation)  
   corpus <- tm_map(corpus, removeNumbers)
+
+  # corpus <- tm_map(corpus, function(x) str_replace_all(x, "[[:punct:]]", " "))
   return(corpus) 
 }
 
@@ -53,15 +52,26 @@ load_dataset <- function(categories, directory) {
 }
 
 export_silhouette <- function(avgS,dataset_name){
-	filename <- paste("silhouette","_",sep="")
-	filename <- paste(filename,dataset_name,sep="")
-	filename <- paste(filename,".png",sep="")
 
-	png(file = filename, bg = "white")
-	plot(2:length(avgS),avgS,type='b',
-	    main='Average Silhouette Coefficient',
-	    xlab='nr. clusters')
-	dev.off()
+  filename <- paste("silhouette","_",sep="")
+  filename <- paste(filename,dataset_name,sep="")
+  filename <- paste(filename,".png",sep="")
+
+  print(filename)
+  print(dataset_name)
+  print(avgS)
+
+  png(file = filename, bg = "white")
+
+  plot(2:(length(avgS) + 1),avgS,type='b',
+      main='Average Silhouette Coefficient',
+      xlab='nr. clusters')
+
+  dev.off()
+
+  # png(filename='silhouette coefficient value.tf.png',width=500,height=500)
+  # plot(2:6,avgS,type='b',main='Average Silhouette Coefficient para tf',xlab='nr. clusters')
+  # dev.off()
 }
 
 categories <- load_categories(path=dataset_dir)
@@ -79,6 +89,7 @@ if(!use_idf){
   doc_term_matrix<-weightTfIdf(DocumentTermMatrix(corpus))
 }
 
+doc_term_matrix <- removeSparseTerms(doc_term_matrix,0.9)
 distance_matrix <- dist(doc_term_matrix);
 
 avgS <- c()

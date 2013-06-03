@@ -65,7 +65,7 @@ An example of use with `wikipedia` dataset::
 
 	R -f build_worldclouds.r ../../data/wikipedia/ TRUE 4 30 80
 
-Here the plotted for each of the four clusters. The results seams not perfect. Not sure if there is a bug at the code or not. I hope to improve it soon. 
+Here the plotted for each of the four clusters. Its a start. I'm sure it can be improved.
 
 .. image:: _plots/wikipedia/1_wikipedia.png
 .. image:: _plots/wikipedia/2_wikipedia.png

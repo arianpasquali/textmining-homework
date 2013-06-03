@@ -1,6 +1,7 @@
 require(tm)
 library(wordcloud)
 library(stringr)
+# library(Snowball)
 
 args <- commandArgs()
 dataset_dir <- args[4]
@@ -42,14 +43,17 @@ load_categories <- function(path=".", pattern=NULL, all.dirs=FALSE,
 
 clean_corpus<- function(corpus){
   corpus <- tm_map(corpus, function(x) str_replace_all(x, "[[:punct:]]", " "))
+
+  corpus <- tm_map(corpus, stripWhitespace)
   corpus <- tm_map(corpus, tolower)
   corpus <- tm_map(corpus, removeWords, stopwords("english"))
-  corpus <- tm_map(corpus, removePunctuation)
-  corpus <- tm_map(corpus, stripWhitespace)
+  corpus <- tm_map(corpus, removePunctuation)  
   corpus <- tm_map(corpus, removeNumbers)
-  # corpus <- tm_map(corpus, removeHtmlTags)
+
+  
   return(corpus) 
 }
+
 
 load_dataset <- function(categories, directory) {
   dirs <- sprintf("%s/%s", directory, categories)
@@ -65,7 +69,7 @@ export_wordcloud <- function(term_freq,cluster_id,dataset_name){
   filename <- paste(filename,".png",sep="")
   
   png(file = filename, bg = "white")
-  wordcloud(names(term_freq),term_freq * 100,min.freq=min_freq,max.words=max_words)
+  wordcloud(names(term_freq),term_freq,min.freq=min_freq,max.words=max_words)
   dev.off()
 }
 
@@ -88,6 +92,7 @@ if(!use_idf){
   doc_term_matrix<-weightTfIdf(DocumentTermMatrix(corpus))
 }
 
+doc_term_matrix <- removeSparseTerms(doc_term_matrix,0.9)
 # distance_matrix <- dist(doc_term_matrix);
 
 #generate clusters with hierachical method
