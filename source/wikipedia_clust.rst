@@ -45,13 +45,13 @@ Find number of clusters based on silhouette coeficient
 #######################################################
 
 If you run R script it perform clustring with KMeans with diferent values for `K` and compare the results for the silhouette coeficient. As parameters you inform the dataset path, if you want TF-IDF weighting and the number of `K` values to test.
-In this case, dataset wikipedia, I know that there will be a lot of HTML tags that were'nt cleaned, that why is a good idea to perform weighting with TF-IDF and get rid of common terms between documentes. Tests will be run with up until 6 clusters.
+Tests will be run with up until 6 clusters.
 
-``R -f find_k_clusters.r ../../data/wikipedia TRUE 6``
+``R -f find_k_clusters.r ../../data/wikipedia FALSE 6``
 
 .. image:: _plots/wikipedia/silhouette_wikipedia.png
 
-According to this analysis it says that this dataset is made of 2 groups of documents. We know that in fact there are 3 groups, but looking closely 2 of them are computer related, which can be the reason these 2 may be too similar.
+According to this analysis it says that this dataset is made of 2 groups of documents. We know that in fact there are 4 groups, I'm still not sure will so much difference.
 
 NOTE: Results are different from those I found above with the Python script. It is mainly because the feature extraction are different. I still need to work on it and perform the same feature extraction in R as I did in Python. 
 
@@ -63,7 +63,7 @@ This script in R perform clustering and as output plots wordclouds for each clus
 
 An example of use with `wikipedia` dataset::
 
-	R -f build_worldclouds.r ../../data/wikipedia/ TRUE 4 30 80
+	R -f build_worldclouds.r ../../data/wikipedia/ FALSE 4 30 80
 
 Here the plotted for each of the four clusters. Its a start. I'm sure it can be improved.
 
